@@ -29,7 +29,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         List<ServiceProvider> serviceProviderList = user.getServiceProviderList();
         Country newCountry = null;
         ServiceProvider serviceProvider1 = null;
-        if(user.isConnected()){
+        if(user.getConnected()){
             throw new Exception("Already connected");
         }
         else if(user.getOriginalCountry().getCountryName().toString().equals(countryName)){
@@ -70,7 +70,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public User disconnect(int userId) throws Exception {
         User user = userRepository2.findById(userId).get();
-        if(!user.isConnected()) {
+        if(!user.getConnected()) {
             throw new Exception("Already disconnected");
         }
         user.setConnected(false);
@@ -99,7 +99,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             }catch (Exception e){
                 throw new Exception("Cannot establish communication");
             }
-            if (!sender.isConnected()){
+            if (!sender.getConnected()){
                 throw new Exception("Cannot establish communication");
             }
             return sender;
@@ -111,7 +111,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         try {
             sender = connect(senderId,countryName);
         }catch (Exception e){
-            if (!sender.isConnected()) throw new Exception("Cannot establish communication");
+            if (!sender.getConnected()) throw new Exception("Cannot establish communication");
         }
         return sender;
     }
